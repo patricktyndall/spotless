@@ -1,4 +1,5 @@
-package authenticate;
+package spotless;
+
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -13,21 +14,36 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.models.AuthorizationCodeCredentials;
 
-public class Authenticator {
-	
-	final int portNumber = 8888;
 
-	public void authenticate(final Api api){
-		
+public class Main {
+
+	public static void main(String[] args) {
+
+		/* Application details necessary to get an access token */
+		final String clientId = "554bc26ca72a4a9fa204b5bc8539ae17";
+		final String clientSecret = "0829c1d4af084dfbb6028202dc94f66c";
+		String code = "<insert code>";
+		final String redirectUri = "http://localhost:8888/callback";
+
+		/* Create a default API instance that will be used to make requests to Spotify */
+		final Api api = Api.builder()
+				.clientId(clientId)
+				.clientSecret(clientSecret)
+				.redirectURI(redirectUri)
+				.build();
+
 		/* Set the necessary scopes that the application will need from the user */
-		final List<String> scopes = Arrays.asList("playlist-modify-public", "user-read-private", "user-read-email");
+		final List<String> scopes = Arrays.asList("user-read-private", "user-read-email");
 
 		/* Set a state. This is used to prevent cross site request forgeries. */
 		final String state = "someExpectedStateString";
 
 		String authorizeURL = api.createAuthorizeURL(scopes, state);
 
-		ServerThread server = new ServerThread(8888);
+		//Dispatch();
+
+
+		SimpleServer server = new SimpleServer(8888);
 		new Thread(server).start();
 
 
@@ -42,6 +58,10 @@ public class Authenticator {
 			}
 		}
 		
+		
+	
+
+		
 		while(!server.isStopped){
 			try {
 				Thread.sleep(15);
@@ -50,12 +70,17 @@ public class Authenticator {
 			}
 			
 		}
+		System.out.println("Server Stopped");
 
+		//System.out.println("Stopping Server");
 		String[] data = server.getData();
-	
+		for(String d : data){
+			System.out.println(d);
+		}
+
+
 		/* Application details necessary to get an access token */
-		String code = data[0];
-		// TODO make sure the state parameter matches--for security reasons
+		code = data[0];
 
 		/* Make a token request. Asynchronous requests are made with the .getAsync method and synchronous requests
 		 * are made with the .get method. This holds for all type of requests. */
@@ -75,13 +100,29 @@ public class Authenticator {
 			}
 
 			public void onFailure(Throwable throwable) {
-				System.out.println("Authentication failed");
+				System.out.println("failed");
 				/* Let's say that the client id is invalid, or the code has been used more than once,
 				 * the request will fail. Why it fails is written in the throwable's message. */
 
 			}
 		});
-		
+
+
+
+
 	}
 
+	static void Dispatch(){
+		SimpleServer server = new SimpleServer(8888);
+		server.run();
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Stopping Server");
+		server.stop();
+	}
 }
+
