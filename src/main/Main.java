@@ -1,6 +1,9 @@
 package main;
 
 
+import gui.GUI;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import authenticate.Authenticator;
 
 import com.wrapper.spotify.Api;
@@ -9,10 +12,20 @@ import controller.Controller;
 import controller.Library;
 
 
-public class Main {
+public class Main extends Application{
 
 	public static void main(String[] args) {
 
+		launch(args);
+	
+	}
+	
+	static void Authenticate(){
+		
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		/* Application details necessary to get an access token */
 		final String clientId = "554bc26ca72a4a9fa204b5bc8539ae17";
 		final String clientSecret = "0829c1d4af084dfbb6028202dc94f66c";
@@ -30,15 +43,16 @@ public class Main {
 		
 		auth.authenticate(api);
 		
-		Controller controller = new Controller(new Library(api));
+		Controller controller = new Controller(api); //TODO pass the gui as an agument to controller
 		
-		controller.launch();
-	
-	}
-	
-	static void Authenticate(){
+		// Controller controller = new Controller();
+		
+		GUI gui = new GUI(controller);
+		
+		gui.start(primaryStage);
 		
 	}
+
 
 }
 

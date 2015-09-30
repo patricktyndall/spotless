@@ -1,20 +1,20 @@
 package controller;
 
+import com.wrapper.spotify.Api;
+
 import data.Parser;
 
 public class Controller {
 
-	Library library;
+	static Library library;
 	
-
-	public Controller(Library library){
-
-		this.library = library;
-	}
-	
-	public void launch() {
-		// TODO Auto-generated method stub
+	public Controller(){
 		
+	}
+
+	public Controller(Api api){
+
+		Controller.library = new Library(api);
 	}
 
 	public void makePlaylistFromFile(String filePath, String title){
