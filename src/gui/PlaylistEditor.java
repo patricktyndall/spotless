@@ -28,7 +28,7 @@ public class PlaylistEditor extends Region{
 	
 	/* Display vars */
 	static final double PLAYLISTPANE_X = 0.3;
-	static final double SEARCHBOX_Y = 0.2;
+	static final double SEARCHBOX_Y = 0.15;
 	
 	
 	public PlaylistEditor(double x, double y){
@@ -43,6 +43,9 @@ public class PlaylistEditor extends Region{
 		
 		playlistPane.display();
 		trackPane.display();
+		searchBox.display();
+		
+		playlistPane.setListener(this);
 		
 		root = new Group();
 		HBox hbox = new HBox();
@@ -61,6 +64,10 @@ public class PlaylistEditor extends Region{
 	
 	public void setCurrentPlaylist(String title){
 		this.currentPlaylist = title;
+	}
+
+	public void refresh() {
+		trackPane.refreshList();
 	}
 	
 	

@@ -17,9 +17,6 @@ public class Pair {
 		for(SimpleArtist a : track.getArtists()){
 			artists.add(a.getName());
 		}
-		
-		
-		
 	}
 	
 	public Pair(String song, List<String> artists){

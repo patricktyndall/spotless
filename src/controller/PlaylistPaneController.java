@@ -17,7 +17,7 @@ public class PlaylistPaneController extends AbstractPlaylistController {
 		library.makeNewPlaylist(title);
 	}
 	
-	public void changePlaylist(String title){
+	public void setCurrentPlaylist(String title){
 		library.setCurrentPlaylist(title);
 	}
 

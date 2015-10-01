@@ -24,8 +24,8 @@ public class GUI extends Application {
 
 	/* Display vars--proportion of said dimension to occupy */
 	
-	static final double X_RATIO = 0.3;
-	static final double Y_RATIO = 0.6;
+	static final double X_RATIO = 0.7;
+	static final double Y_RATIO = 0.4;
 	
 	double screenHeight;
 	double screenWidth;

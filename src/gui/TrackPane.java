@@ -37,9 +37,13 @@ public class TrackPane extends VBox{
 	}
 
 	public void display(){
-		
 		makeList();
-		
+	}
+	
+	public void refreshList(){
+		list.getItems().clear();
+		List<Pair> items = controller.getTrackInfo();
+		list.setItems(FXCollections.observableArrayList(items));
 	}
 	
 	private void makeList(){
@@ -49,6 +53,8 @@ public class TrackPane extends VBox{
 		list.setPrefWidth(width);
 		list.setPrefHeight(height);
 
+		for(Pair p : items)
+			System.out.println(p.song);
 		
 		list.setCellFactory(new Callback<ListView<Pair>, 
 	            ListCell<Pair>>() { 

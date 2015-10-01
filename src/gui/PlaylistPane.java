@@ -44,6 +44,17 @@ public class PlaylistPane extends VBox{
 		makeList();
 		this.setAlignment(Pos.TOP_CENTER);
 	}
+	
+	public void setListener(final PlaylistEditor playlistEditor){ // TODO why must this be final
+		list.getSelectionModel().selectedItemProperty().addListener(
+				new ChangeListener<String>() {
+					public void changed(ObservableValue<? extends String> ov, 
+							String old_val, String new_val) {
+						controller.setCurrentPlaylist(new_val);
+						playlistEditor.refresh();
+					}
+				});
+	}
 
 	private void makeAddNewButton(){
 
@@ -86,14 +97,7 @@ public class PlaylistPane extends VBox{
 		list.setPrefWidth(width);
 		list.setPrefHeight(height);
 
-		list.getSelectionModel().selectedItemProperty().addListener(
-				new ChangeListener<String>() {
-					public void changed(ObservableValue<? extends String> ov, 
-							String old_val, String new_val) {
-						controller.changePlaylist(new_val);
-						System.out.println(new_val);
-					}
-				});
+		
 
 		this.getChildren().add(list);
 	}

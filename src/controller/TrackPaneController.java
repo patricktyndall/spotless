@@ -8,6 +8,8 @@ import data.Pair;
 
 public class TrackPaneController extends AbstractPlaylistController{
 	
+	
+	
 	public TrackPaneController(){
 		super();
 	}
