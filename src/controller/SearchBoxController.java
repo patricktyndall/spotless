@@ -5,12 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.wrapper.spotify.models.Artist;
+import com.wrapper.spotify.models.Track;
 
 import data.Pair;
 
 public class SearchBoxController extends AbstractPlaylistController{
 
-	public List<String> getSearchResults(String search) {
+/*	public List<String> getSearchResults(String search) {
 //		String[] ary = new String[]{"first", "second", "third", "fourth"};
 //		int i = search.length();
 //		ary[i] = "Deleted";
@@ -24,6 +25,12 @@ public class SearchBoxController extends AbstractPlaylistController{
 			ret.add(makeStringFromArtists(p.artists));
 		
 		return ret;
+	}*/
+	
+	public List<Track> getSearchResults(String search){
+		
+		return library.searchForTrackTitle(search);
+		
 	}
 	
 	private String makeStringFromArtists(List<String> artists){

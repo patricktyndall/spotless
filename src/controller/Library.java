@@ -45,7 +45,7 @@ public class Library {
 		playlists = new HashMap<String, SimplePlaylist>();
 		makePlaylistMap();
 	}
-	
+
 	private void makePlaylistMap(){
 		final UserPlaylistsRequest request = api.getPlaylistsForUser(username).build();
 		try {
@@ -79,27 +79,28 @@ public class Library {
 		this.addTracksToPlaylist(playlist, URIs);
 		currentPlaylist = playlist;
 	}
-	
-	public List<Pair> searchForTrackTitle(String s){
-		TrackSearchRequest request = api.searchTracks(s).market("US").build();
+
+	public List<Track> searchForTrackTitle(String s){
+		TrackSearchRequest.Builder builder = api.searchTracks(s).market("US");
+		TrackSearchRequest request = builder.limit(10).build(); // TODO revisit, see if you can make results smaller to improve performance
 		Page<Track> trackSearchResult = null;
-		List<Pair> ret = new ArrayList<Pair>();
+		List<Track> ret = new ArrayList<Track>();
 		try {
-		   trackSearchResult = request.get();
-		   System.out.println("I got " + trackSearchResult.getTotal() + " results!");
+			trackSearchResult = request.get();
+			System.out.println("I got " + trackSearchResult.getTotal() + " results!");
 		} catch (Exception e) {
-		   System.out.println("Something went wrong!" + e.getMessage());
+			System.out.println("Something went wrong!" + e.getMessage());
 		}
-		int i = 0; // TODO better way to get top 10
+		
 		for(Track t : trackSearchResult.getItems()){
-			ret.add(new Pair(t));
-			i++;
-			if(i==10)
-				break;
+			ret.add(t);
+			
 		}
 		return ret;
-		
+
 	}
+
+
 
 	public List<Pair> getPlaylistTrackData(){
 		PlaylistTracksRequest request = api.getPlaylistTracks(username, currentPlaylist.getId()).build();
@@ -172,9 +173,9 @@ public class Library {
 				ret.add(playlist.getName());
 				// System.out.println((playlist.getName()));
 			}
-			
+
 			System.out.println("Playlist data :" +playlistsPage.getLimit()+ "  " + playlistsPage.getNext() + "   "+ 
-			playlistsPage.getPrevious()+ "   " + playlistsPage.getTotal());
+					playlistsPage.getPrevious()+ "   " + playlistsPage.getTotal());
 
 		} catch (Exception e) {
 			System.out.println("Something went wrong!" + e.getMessage());

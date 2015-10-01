@@ -46,6 +46,7 @@ public class PlaylistEditor extends Region{
 		searchBox.display();
 		
 		playlistPane.setListener(this);
+		// searchBox.setListener(this);
 		
 		root = new Group();
 		HBox hbox = new HBox();
