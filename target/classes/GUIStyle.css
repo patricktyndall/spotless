@@ -1,0 +1,85 @@
+.playlist_pane{
+	-fx-border-width: 0 4 0 0;
+	-fx-border-color: deepskyblue;
+}
+.playlist_list{
+	-fx-font: 13px "Verdana";
+	-fx-text-fill: deepskyblue;
+	-fx-border-color: deepskyblue;
+	-fx-border-width: 0 0 0 0;
+	-fx-border-insets: 0 0 0 0;
+	-fx-background-color: midnightblue;
+}
+.list-cell{
+	-fx-background-color: midnightblue;
+	-fx-font: 12px "Verdana";
+	-fx-text-fill: deepskyblue;
+	-fx-border-color: deepskyblue;
+	-fx-border-width: 0;
+	-fx-alignment: center-left; 
+	-fx-text-alignment: left;
+}
+.list-cell:hover{
+	-fx-text-fill: white;
+	-fx-border-color: white;
+}
+.list-cell:selected{
+	-fx-text-fill: white;
+	-fx-border-color: white;
+	-fx-font-weight: bolder
+}
+.add_new_button{
+	-fx-font: 13px "Verdana";
+	-fx-font-weight: bold;
+	-fx-text-fill: deepskyblue;
+	-fx-background-color: midnightblue;
+	-fx-border-width: 0;
+	-fx-text-alignment: left;
+	-fx-alignment: center-left; 
+}
+.add_new_button:hover{
+	-fx-text-fill: white;
+	-fx-border-color: white;
+}
+.search_button{
+	-fx-font: 13px "Verdana";
+	-fx-font-weight: bold;
+	-fx-text-fill: deepskyblue;
+	-fx-background-color: midnightblue;
+	-fx-border-color: white;
+	-fx-border-width: 0;
+}
+.search_button:hover{
+	-fx-text-fill: white;
+	-fx-border-color: white;
+}
+.search_field{
+	-fx-font: 13px "Verdana";
+	-fx-text-fill: white;
+	-fx-background-color: midnightblue;
+	-fx-alignment: center-left; 
+	-fx-text-alignment: left;
+	-fx-border-color: midnightblue;
+	-fx-border-width: 2;	
+}
+.playlist_editor{
+	-fx-background-color: midnightblue;
+}
+.track_list{
+	
+}
+.track_cell{
+	
+}
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}

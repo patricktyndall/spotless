@@ -22,5 +22,10 @@
   		<artifactId>spotify-web-api-java</artifactId>
   		<version>1.5.0</version>
   	</dependency>
+  	<dependency>
+    	<groupId>com.aquafx-project</groupId>
+    	<artifactId>aquafx</artifactId>
+    	<version>0.2</version>
+	</dependency>
   </dependencies>
 </project>

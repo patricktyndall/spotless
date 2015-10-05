@@ -82,7 +82,7 @@ public class Library {
 
 	public List<Track> searchForTrackTitle(String s){
 		TrackSearchRequest.Builder builder = api.searchTracks(s).market("US");
-		TrackSearchRequest request = builder.limit(10).build(); // TODO revisit, see if you can make results smaller to improve performance
+		TrackSearchRequest request = builder.limit(5).build(); // TODO revisit, see if you can make results smaller to improve performance
 		Page<Track> trackSearchResult = null;
 		List<Track> ret = new ArrayList<Track>();
 		try {

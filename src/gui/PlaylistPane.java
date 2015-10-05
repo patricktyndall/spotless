@@ -30,10 +30,13 @@ public class PlaylistPane extends VBox{
 	private PlaylistPaneController controller;
 	
 	ListView<String> list;
+	Button button;
 	double width;
 	double height;
 
 	public PlaylistPane(double x, double y) {
+		this.getStylesheets().add("GUIStyle.css");
+		this.getStyleClass().add("playlist_pane");
 		this.width = x;
 		this.height = y;
 
@@ -58,8 +61,9 @@ public class PlaylistPane extends VBox{
 
 	private void makeAddNewButton(){
 
-		Button button = new Button("Add new");
-
+		button = new Button("Add new");
+		button.setPrefWidth(width);
+		button.getStyleClass().add("add_new_button");
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 				newPlaylistWizard();
@@ -92,13 +96,11 @@ public class PlaylistPane extends VBox{
 
 	private void makeList(){
 		list = new ListView<String>();
+		list.getStyleClass().add("playlist_list");
 		List<String> items = controller.getPlaylistNames();
 		list.setItems(FXCollections.observableArrayList(items));
 		list.setPrefWidth(width);
 		list.setPrefHeight(height);
-
-		
-
 		this.getChildren().add(list);
 	}
 

@@ -22,7 +22,7 @@ public class PlaylistEditor extends Region{
 	
 	private PlaylistPane playlistPane;
 	private SearchBox searchBox;
-	private TrackPane trackPane;
+	// private TrackPane trackPane; TODO
 	
 	private Group root;
 	
@@ -32,18 +32,19 @@ public class PlaylistEditor extends Region{
 	
 	
 	public PlaylistEditor(double x, double y){
+		this.getStylesheets().add("GUIStyle.css");
+		this.getStyleClass().add("playlist_editor");
 		
 		searchBox = new SearchBox(x*(1-PLAYLISTPANE_X), y*SEARCHBOX_Y);
 		playlistPane = new PlaylistPane(x*PLAYLISTPANE_X, y);
-		trackPane = new TrackPane(x*(1-PLAYLISTPANE_X), y*(1-SEARCHBOX_Y));
-		
+		// trackPane = new TrackPane(x*(1-PLAYLISTPANE_X), y*(1-SEARCHBOX_Y));
+		// TODO ^ removed cause broken
 		searchBox.setController(new SearchBoxController());
 		playlistPane.setController(new PlaylistPaneController());
-		trackPane.setController(new TrackPaneController());
-		
+		//trackPane.setController(new TrackPaneController());
+		//TODO^
 		playlistPane.display();
-		trackPane.display();
-		searchBox.display();
+		
 		
 		playlistPane.setListener(this);
 		// searchBox.setListener(this);
@@ -53,7 +54,7 @@ public class PlaylistEditor extends Region{
 		VBox vbox = new VBox();
 		
 		vbox.getChildren().add(searchBox);
-		vbox.getChildren().add(trackPane);
+		// vbox.getChildren().add(trackPane); TODO
 		hbox.getChildren().add(playlistPane);
 		hbox.getChildren().add(vbox);
 		
@@ -68,7 +69,7 @@ public class PlaylistEditor extends Region{
 	}
 
 	public void refresh() {
-		trackPane.refreshList();
+		// trackPane.refreshList(); TODO
 	}
 	
 	
