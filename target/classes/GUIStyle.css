@@ -83,3 +83,16 @@
 .list-view .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
+.result_cell{
+	-fx-background-color: deepskyblue;
+	-fx-font: 12px "Verdana";
+	-fx-text-fill: white;
+	-fx-border-width: 0 0 1 0;
+	-fx-alignment: center-left; 
+	-fx-border-color: steelblue;
+	-fx-text-alignment: left;
+}
+.result_cell:selected{
+	-fx-border-width: 2;
+	-fx-border-color: white;
+}

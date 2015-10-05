@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sun.javafx.collections.MappingChange.Map;
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.methods.AddTrackToPlaylistRequest;
 import com.wrapper.spotify.methods.PlaylistCreationRequest;
-import com.wrapper.spotify.methods.PlaylistRequest;
-import com.wrapper.spotify.methods.PlaylistRequest.Builder;
 import com.wrapper.spotify.methods.PlaylistTracksRequest;
 import com.wrapper.spotify.methods.TrackSearchRequest;
 import com.wrapper.spotify.methods.UserPlaylistsRequest;
@@ -82,7 +79,7 @@ public class Library {
 
 	public List<Track> searchForTrackTitle(String s){
 		TrackSearchRequest.Builder builder = api.searchTracks(s).market("US");
-		TrackSearchRequest request = builder.limit(5).build(); // TODO revisit, see if you can make results smaller to improve performance
+		TrackSearchRequest request = builder.limit(10).build(); // TODO revisit, see if you can make results smaller to improve performance
 		Page<Track> trackSearchResult = null;
 		List<Track> ret = new ArrayList<Track>();
 		try {
@@ -102,9 +99,9 @@ public class Library {
 
 
 
-	public List<Pair> getPlaylistTrackData(){
+	public List<Track> getPlaylistTrackData(){
 		PlaylistTracksRequest request = api.getPlaylistTracks(username, currentPlaylist.getId()).build();
-		List<Pair> ret = new ArrayList<Pair>();
+		List<Track> ret = new ArrayList<Track>();
 
 		try {
 			final Page<PlaylistTrack> page = request.get();
@@ -112,7 +109,7 @@ public class Library {
 			final List<PlaylistTrack> playlistTracks = page.getItems();
 
 			for (PlaylistTrack playlistTrack : playlistTracks) {
-				ret.add(new Pair(playlistTrack.getTrack()));
+				ret.add((playlistTrack.getTrack()));
 			}
 
 		} catch (Exception e) {

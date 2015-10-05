@@ -1,8 +1,9 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import com.wrapper.spotify.models.Track;
 
 import data.Pair;
 
@@ -14,11 +15,11 @@ public class TrackPaneController extends AbstractPlaylistController{
 		super();
 	}
 	
-	public List<Pair> getTrackInfo(){
+	public List<Track> getTrackInfo(){
 		if(library.playlistSet()){
 			return library.getPlaylistTrackData(); 
 		}
-		else return new ArrayList<Pair>();
+		else return new ArrayList<Track>();
 
 	}
 	

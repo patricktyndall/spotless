@@ -1,12 +1,16 @@
 package gui;
 
+import com.wrapper.spotify.models.Track;
+
 import controller.PlaylistPaneController;
 import controller.SearchBoxController;
+import controller.SearchResultsPaneController;
 import controller.TrackPaneController;
 import javafx.scene.Group;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 /*
  * Controller for the playlist-editing screen. 
  * Consists of three parts:
@@ -22,39 +26,50 @@ public class PlaylistEditor extends Region{
 	
 	private PlaylistPane playlistPane;
 	private SearchBox searchBox;
-	// private TrackPane trackPane; TODO
+	private SearchResultsPane searchResultsPane;
+	private TrackPane trackPane; 
 	
 	private Group root;
 	
 	/* Display vars */
 	static final double PLAYLISTPANE_X = 0.3;
 	static final double SEARCHBOX_Y = 0.15;
-	
+	double width;
+	double height;
+	Stage stage;
 	
 	public PlaylistEditor(double x, double y){
+		this.width = x;
+		this.height = y;
 		this.getStylesheets().add("GUIStyle.css");
 		this.getStyleClass().add("playlist_editor");
 		
 		searchBox = new SearchBox(x*(1-PLAYLISTPANE_X), y*SEARCHBOX_Y);
 		playlistPane = new PlaylistPane(x*PLAYLISTPANE_X, y);
-		// trackPane = new TrackPane(x*(1-PLAYLISTPANE_X), y*(1-SEARCHBOX_Y));
-		// TODO ^ removed cause broken
+		trackPane = new TrackPane(x*(1-PLAYLISTPANE_X), y*(1-SEARCHBOX_Y));
+		searchResultsPane = new SearchResultsPane(250, 500); // TODO fix these sizes
+		
 		searchBox.setController(new SearchBoxController());
 		playlistPane.setController(new PlaylistPaneController());
-		//trackPane.setController(new TrackPaneController());
-		//TODO^
-		playlistPane.display();
+		trackPane.setController(new TrackPaneController());
+		searchResultsPane.setController(new SearchResultsPaneController());
 		
+		playlistPane.display();
+		searchResultsPane.display(); // TODO get the window from searchBox
 		
 		playlistPane.setListener(this);
-		// searchBox.setListener(this);
+		searchBox.setListener(this);
+		searchResultsPane.setListener(this);
+		
+		
+		
 		
 		root = new Group();
 		HBox hbox = new HBox();
 		VBox vbox = new VBox();
 		
 		vbox.getChildren().add(searchBox);
-		// vbox.getChildren().add(trackPane); TODO
+		vbox.getChildren().add(trackPane); 
 		hbox.getChildren().add(playlistPane);
 		hbox.getChildren().add(vbox);
 		
@@ -69,7 +84,27 @@ public class PlaylistEditor extends Region{
 	}
 
 	public void refresh() {
-		// trackPane.refreshList(); TODO
+		trackPane.update(); 
+	}
+
+	public void search(String text) {
+		searchResultsPane.hide();
+		searchResultsPane.showResults(text);
+		//searchResultsPane.show(this.getParent().getScene().getWindow());
+	}
+
+	public void trackSelected(Track selectedItem) {
+		System.out.println(selectedItem.getName());
+		// TODO add this to the playlist
+		// force the trackPane to refresh, and scroll down
+		
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		
+		this.searchResultsPane.setParentStage(stage);
+		
 	}
 	
 	

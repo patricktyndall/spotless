@@ -29,6 +29,7 @@ public class GUI extends Application {
 	
 	double screenHeight;
 	double screenWidth;
+	Stage stage;
 
 	public GUI(Controller controller){
 
@@ -47,16 +48,20 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		stage = primaryStage;
 		setupBounds();
-		primaryStage.setTitle("Spotless");
+		stage.setTitle("Spotless");
 		StackPane root = new StackPane();
+		
+		
 		PlaylistEditor editor = makePlaylistEditor();
-		
-		
-		primaryStage.setScene(new Scene(root, screenWidth*X_RATIO, screenHeight*Y_RATIO));
-		
 		root.getChildren().add(editor);
-		primaryStage.show();
+		stage.setScene(new Scene(root, screenWidth*X_RATIO, screenHeight*Y_RATIO));
+		
+		
+		stage.show();
+		editor.setStage(stage);
+		
 	}
 	
 	private PlaylistEditor makePlaylistEditor(){
