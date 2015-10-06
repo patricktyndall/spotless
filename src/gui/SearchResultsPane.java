@@ -167,7 +167,9 @@ public class SearchResultsPane extends ListView<Track>{
 						Hyperlink h = new Hyperlink(s.getName());
 						h.getStyleClass().add("result_artist_name");
 						artistBox.getChildren().add(h);
+						artistBox.getChildren().add(new Label("/"));
 					}
+					artistBox.getChildren().remove(artistBox.getChildren().size()-1);
 					List<com.wrapper.spotify.models.Image> URLS = track.getAlbum().getImages();
 					String imageSource = URLS.get(URLS.size()-1).getUrl();
 					albumArt.setImage(new Image(imageSource));
