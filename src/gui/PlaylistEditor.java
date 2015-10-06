@@ -82,7 +82,6 @@ public class PlaylistEditor extends Region{
 	}
 
 	public void search(String text) {
-		searchResultsPane.hide();
 		searchResultsPane.showResults(text);
 	}
 

@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,9 +37,11 @@ public class SearchResultsPane extends ListView<Track>{
 	double width;
 	double height;
 	SearchResultsPaneController controller = new SearchResultsPaneController();
+	List<Thread> runningThreads;
 
 
 	public SearchResultsPane(double x, double y){
+		runningThreads = new ArrayList<Thread>();
 		this.getStylesheets().add("GUIStyle.css");
 		list = new ArrayList<Track>();
 		width = x;
@@ -70,59 +73,73 @@ public class SearchResultsPane extends ListView<Track>{
 		if(this.getItems().size()==0)
 			this.setItems(FXCollections.observableArrayList(newList));
 		else{	// TODO make this iterate over the newList instead of items
+			this.runningThreads.clear();
 			for(Track track : this.getItems()){
 				int index = this.getItems().indexOf(track);
 				this.getItems().set(index, newList.get(index));
 			}
 		}
-	}
-
-	public void hide(){
-		stage.hide();
-	}
-
-/*	public void show(Window owner){
-		stage.initOwner(owner);
-		stage.show();
 		
-		this.requestFocus();
+		for(Thread t : runningThreads){
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}}
 	}
-*/
+
+
 	public class ResultListCell extends ListCell<Track> {
 
 		private HBox hbox = new HBox();
 		private Hyperlink name = new Hyperlink();
 		private HBox artistBox = new HBox();
+		private Hyperlink album = new Hyperlink();
 		private ImageView albumArt = new ImageView();
+		private StackPane albumArtPane = new StackPane();
 
 		public ResultListCell() {
 			this.getStylesheets().add("GUIStyle.css");
 			this.getStyleClass().clear();
 			this.getStyleClass().add("result_cell");
-			configureHbox();        
-			addControlsToGrid();  
+			
+			configureAlbumArt();     
+			setTextInfo();
 			
 		}
 
-		private void configureHbox() {
-			this.setPrefHeight(100);
+		private void configureAlbumArt() {
+			
+			this.setPrefHeight(90);
 			this.setPrefWidth(SearchResultsPane.this.width);
 			
+			albumArtPane.getChildren().add(albumArt);
+			albumArtPane.setPrefSize(70, 70);
+			albumArtPane.setMaxSize(70, 70);
 			albumArt.setFitWidth(70);
 			albumArt.setFitHeight(70);
-
+			albumArtPane.setTranslateX(10);	
+			albumArtPane.getStyleClass().add("album_art");
 		
+			
 			hbox.setSpacing(15);
-			//hbox.setPadding(new Insets(0, 10, 0, 10));
 			hbox.setAlignment(Pos.CENTER_LEFT);
+			hbox.getChildren().add(albumArtPane);
+
+					
 		}
 
-		private void addControlsToGrid() {
-			hbox.getChildren().add(albumArt);
+		private void setTextInfo(){
+			name.getStyleClass().add("result_track_name");
+			album.getStyleClass().add("result_album_name");
+			
 			VBox textInfo = new VBox();
+			textInfo.setTranslateY(5);
 			textInfo.getChildren().add(name);
 			textInfo.getChildren().add(artistBox);
-			hbox.getChildren().add(textInfo);                       
+			textInfo.getChildren().add(album);
+			textInfo.setTranslateX(5);
+			hbox.getChildren().add(textInfo);      
 		}
 
 		@Override
@@ -145,20 +162,20 @@ public class SearchResultsPane extends ListView<Track>{
 				public void run(){
 					artistBox.getChildren().clear();
 					name.setText(track.getName());
-					
+					album.setText(track.getAlbum().getName());
 					for(SimpleArtist s : track.getArtists()){
-						artistBox.getChildren().add(new Hyperlink(s.getName())); // TODO this will have a trailing comma
+						Hyperlink h = new Hyperlink(s.getName());
+						h.getStyleClass().add("result_artist_name");
+						artistBox.getChildren().add(h);
 					}
-					
 					List<com.wrapper.spotify.models.Image> URLS = track.getAlbum().getImages();
 					String imageSource = URLS.get(URLS.size()-1).getUrl();
 					albumArt.setImage(new Image(imageSource));
 				}
 			};
-
+			SearchResultsPane.this.runningThreads.add(t);
 			t.start();
 			setGraphic(hbox);
-			
 		}
 	}
 

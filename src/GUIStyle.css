@@ -2,7 +2,11 @@
 	-fx-border-width: 0 0 2 0;
 	-fx-border-color: #5d8b8b;
 	-fx-background-color: #101b1b;
-
+}
+.album_art{
+	-fx-border-width: 3 3 3 3;
+	-fx-border-color: #5d8b8b;
+	-fx-border-radius: 2;
 }
 .hyperlink{
 	-fx-text-fill: white;
@@ -142,4 +146,16 @@
 .no_playlist_dialog{
 	-fx-font: 12px "Verdana";
 	-fx-text-fill: #5d8b8b;
+}
+.result_track_name{
+	-fx-text-fill: #5d8b8b;
+	-fx-font: 12px "Verdana";
+}
+.result_artist_name{
+	-fx-text-fill: #5d8b8b;
+	-fx-font: 10px "Verdana";
+}
+.result_album_name{
+	-fx-text-fill: #5d8b8b;
+	-fx-font: 10px "Verdana";
 }
