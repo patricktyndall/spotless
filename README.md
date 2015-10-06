@@ -1,14 +1,13 @@
-##spotless
+#spotless
 
-#What?
-A quick and dirty little tool for creating and (quickly) adding tracks to new playlists on Spotify.
+###What?
+A quick and dirty tool for creating and (quickly) adding tracks to new playlists on Spotify.
 
-#Why?
+###Why?
 The Spotify workflow for adding tracks to playlists is pretty clunky--you need to search, load the results, right-click on 
-the correct one, and select the target playlist from the menu. This can be a serious pain if you need to add a bunch of tracks
-at once. 
+the correct one, and select the target playlist from the menu--for each track you want to add. This can be a serious pain if you need to add a bunch of tracks at once. 
 
-#Who?
+###Who?
 This is designed for that critical musical member of any social group, he who find himself frequently creating new playlists 
 for barbecues, parties, and road trips simply because nobody else has the musical chops. If you've already got the tracks
 in mind, and don't need a page of results to sift through, this will let you make a playlist in a fraction of the time.
