@@ -12,6 +12,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
 import com.wrapper.spotify.models.SimpleArtist;
@@ -20,40 +22,68 @@ import com.wrapper.spotify.models.Track;
 import controller.AbstractPlaylistController;
 import controller.TrackPaneController;
 
-public class TrackPane extends TableView<Track>{
+public class TrackPane extends Region{
 
 	static final Double ROW_HEIGHT_PCT = 0.05;
-
 
 	private TrackPaneController controller;
 
 
 	double width;
 	double height;
-
+	TableView<Track> table;
+	StackPane noPlaylistSelectedDialog;
+	
 
 	public TrackPane(double x, double y) {
+		
 		this.width = x;
 		this.height = y;
-
-		this.getStylesheets().add("GUIStyle.css");
-		this.setItems(FXCollections.observableArrayList(new ArrayList<Track>()));
-
+		
 		makeTable();
+		makeNoPlaylistSelectedDialog();
+		
+		this.getChildren().add(noPlaylistSelectedDialog);
+	}
+
+	private void makeNoPlaylistSelectedDialog() {
+		noPlaylistSelectedDialog = new StackPane();
+		noPlaylistSelectedDialog.setPrefSize(width, height);
+		Label label = new Label("No playlist selected");
+		noPlaylistSelectedDialog.getChildren().add(label);
+		label.getStyleClass().add("no_playlist_dialog");
 	}
 
 	private void makeTable(){
+		table = new TableView<Track>();
+		table.setPrefWidth(width);
+		table.setPrefHeight(height);
+		table.getStylesheets().add("GUIStyle.css");
+		table.setItems(FXCollections.observableArrayList(new ArrayList<Track>()));
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 		makeTrackColumn();
 		makeArtistColumn();
 		makeAlbumColumn();
 	}
 	
 	public void update(){
-		updateItems(controller.getTrackInfo());
+		if(controller.isPlaylistSelected()){
+			updateItems(controller.getTrackInfo());
+			if(!this.getChildren().contains(table)){
+				this.getChildren().clear();
+				this.getChildren().add(table);
+			}
+		}
+		else{
+			this.getChildren().clear();
+			this.getChildren().add(noPlaylistSelectedDialog);
+		}
+		
 	}
 	
 	public void updateItems(List<Track> newItems){
-		this.setItems(FXCollections.observableArrayList(newItems));
+		table.setItems(FXCollections.observableArrayList(newItems));
 	}
 
 	private void makeTrackColumn(){
@@ -80,8 +110,10 @@ public class TrackPane extends TableView<Track>{
 		}     
 				);
 
-
-		this.getColumns().add(trackNameCol);
+		trackNameCol.setPrefWidth(width/3.0);
+		trackNameCol.setMaxWidth(width/2.0);
+		trackNameCol.setMinWidth(width/9.0);
+		table.getColumns().add(trackNameCol);
 	}
 	
 	private void makeArtistColumn(){
@@ -114,8 +146,10 @@ public class TrackPane extends TableView<Track>{
 			}     
 					);
 
-
-			this.getColumns().add(artistNameCol);
+			artistNameCol.setPrefWidth(width/3.0);
+			artistNameCol.setMaxWidth(width/2.0);
+			artistNameCol.setMinWidth(width/9.0);
+			table.getColumns().add(artistNameCol);
 		}
 
 	private void makeAlbumColumn(){
@@ -141,9 +175,11 @@ public class TrackPane extends TableView<Track>{
 			}	
 		}     
 				);
+		albumNameCol.setPrefWidth(width/3.0);
+		albumNameCol.setMaxWidth(width/2.0);
+		albumNameCol.setMinWidth(width/9.0);
 
-
-		this.getColumns().add(albumNameCol);
+		table.getColumns().add(albumNameCol);
 	}
 	public void setController(AbstractPlaylistController c){
 		this.controller = (TrackPaneController) c;

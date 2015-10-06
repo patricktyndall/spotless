@@ -29,6 +29,7 @@ public class SearchBox extends HBox{
 		this.width = x;
 		this.height = y;
 		this.getStylesheets().add("GUIStyle.css");
+		this.getStyleClass().add("search_section");
 		makeTextField();
 		makeButton();
 

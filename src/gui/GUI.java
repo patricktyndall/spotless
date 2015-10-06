@@ -1,15 +1,15 @@
 package gui;
 
 import controller.Controller;
-import controller.PlaylistPaneController;
-import controller.SearchBoxController;
-import controller.TrackPaneController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class GUI extends Application {
 
@@ -56,7 +56,21 @@ public class GUI extends Application {
 		
 		PlaylistEditor editor = makePlaylistEditor();
 		root.getChildren().add(editor);
+		
+		if(Platform.isSupported(javafx.application.ConditionalFeature.UNIFIED_WINDOW))
+			stage.initStyle(StageStyle.UNIFIED);
+		else
+			stage.initStyle(StageStyle.DECORATED);
+		
 		stage.setScene(new Scene(root, screenWidth*X_RATIO, screenHeight*Y_RATIO));
+		
+		
+		/* lock stage size */
+		stage.setMinWidth(screenWidth*X_RATIO);
+		stage.setMaxWidth(screenWidth*X_RATIO);
+		stage.setMinHeight(screenHeight*Y_RATIO);
+		stage.setMaxHeight(screenHeight*Y_RATIO);
+		
 		
 		
 		stage.show();

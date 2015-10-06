@@ -22,8 +22,6 @@ import javafx.stage.Stage;
  */
 public class PlaylistEditor extends Region{
 	
-	String currentPlaylist; // TODO
-	
 	private PlaylistPane playlistPane;
 	private SearchBox searchBox;
 	private SearchResultsPane searchResultsPane;
@@ -32,7 +30,7 @@ public class PlaylistEditor extends Region{
 	private Group root;
 	
 	/* Display vars */
-	static final double PLAYLISTPANE_X = 0.3;
+	static final double PLAYLISTPANE_X = 0.18;
 	static final double SEARCHBOX_Y = 0.15;
 	double width;
 	double height;
@@ -55,7 +53,7 @@ public class PlaylistEditor extends Region{
 		searchResultsPane.setController(new SearchResultsPaneController());
 		
 		playlistPane.display();
-		searchResultsPane.display(); // TODO get the window from searchBox
+		searchResultsPane.display(); 
 		
 		playlistPane.setListener(this);
 		searchBox.setListener(this);
@@ -78,10 +76,6 @@ public class PlaylistEditor extends Region{
 		this.getChildren().add(root);
 		
 	}
-	
-	public void setCurrentPlaylist(String title){
-		this.currentPlaylist = title;
-	}
 
 	public void refresh() {
 		trackPane.update(); 
@@ -90,7 +84,6 @@ public class PlaylistEditor extends Region{
 	public void search(String text) {
 		searchResultsPane.hide();
 		searchResultsPane.showResults(text);
-		//searchResultsPane.show(this.getParent().getScene().getWindow());
 	}
 
 	public void trackSelected(Track selectedItem) {
@@ -100,9 +93,8 @@ public class PlaylistEditor extends Region{
 		
 	}
 
-	public void setStage(Stage stage) {
+	public void setStage(Stage stage) { // TODO best way to do this?
 		this.stage = stage;
-		
 		this.searchResultsPane.setParentStage(stage);
 		
 	}

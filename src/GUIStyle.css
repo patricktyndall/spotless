@@ -1,69 +1,67 @@
+.search_section{
+	-fx-border-width: 0 0 2 0;
+	-fx-border-color: #5d8b8b;
+	-fx-background-color: #101b1b;
+
+}
+.hyperlink{
+	-fx-text-fill: white;
+	-fx-font: 12px "Verdana";
+}
 .playlist_pane{
-	-fx-border-width: 0 4 0 0;
-	-fx-border-color: deepskyblue;
+	-fx-border-width: 0 2 0 0;
+	-fx-border-color: #5d8b8b;
 }
 .playlist_list{
-	-fx-font: 13px "Verdana";
-	-fx-text-fill: deepskyblue;
-	-fx-border-color: deepskyblue;
-	-fx-border-width: 0 0 0 0;
-	-fx-border-insets: 0 0 0 0;
-	-fx-background-color: midnightblue;
-}
-.list-cell{
-	-fx-background-color: midnightblue;
-	-fx-font: 12px "Verdana";
-	-fx-text-fill: deepskyblue;
-	-fx-border-color: deepskyblue;
 	-fx-border-width: 0;
+	-fx-background-color: transparent;
+}
+
+.list-cell{
+	-fx-font: 12px "Verdana";
+	-fx-background-color: #101b1b;
+	-fx-text-fill: #5d8b8b;
 	-fx-alignment: center-left; 
 	-fx-text-alignment: left;
 }
 .list-cell:hover{
 	-fx-text-fill: white;
-	-fx-border-color: white;
 }
 .list-cell:selected{
 	-fx-text-fill: white;
-	-fx-border-color: white;
-	-fx-font-weight: bolder
+	-fx-font-weight: bolder;
 }
 .add_new_button{
 	-fx-font: 13px "Verdana";
 	-fx-font-weight: bold;
-	-fx-text-fill: deepskyblue;
-	-fx-background-color: midnightblue;
+	-fx-text-fill: #5d8b8b;
+	-fx-background-color: #101b1b;
 	-fx-border-width: 0;
 	-fx-text-alignment: left;
 	-fx-alignment: center-left; 
 }
 .add_new_button:hover{
 	-fx-text-fill: white;
-	-fx-border-color: white;
 }
 .search_button{
 	-fx-font: 13px "Verdana";
 	-fx-font-weight: bold;
-	-fx-text-fill: deepskyblue;
-	-fx-background-color: midnightblue;
-	-fx-border-color: white;
-	-fx-border-width: 0;
+	-fx-text-fill: #5d8b8b;
+	-fx-background-color: transparent;
 }
 .search_button:hover{
 	-fx-text-fill: white;
-	-fx-border-color: white;
 }
 .search_field{
 	-fx-font: 13px "Verdana";
 	-fx-text-fill: white;
-	-fx-background-color: midnightblue;
+	-fx-background-color: #101b1b;
 	-fx-alignment: center-left; 
 	-fx-text-alignment: left;
-	-fx-border-color: midnightblue;
-	-fx-border-width: 2;	
+	-fx-border-width: 0;	
 }
 .playlist_editor{
-	-fx-background-color: midnightblue;
+	-fx-background-color: black;
 }
 .track_list{
 	
@@ -83,16 +81,65 @@
 .list-view .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
+.table-view .scroll-bar:vertical .increment-arrow,
+.table-view .scroll-bar:vertical .decrement-arrow,
+.table-view .scroll-bar:vertical .increment-button,
+.table-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow,
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+.table-view{
+	-fx-background-color: transparent;
+	-fx-border-width: 0;
+}
+.table-row-cell {
+    -fx-background-color: black;
+    -fx-border-width: 0 0 0.25 0;
+	-fx-border-color: #5d8b8b;
+}
+.table-column-cell{
+	-fx-border-width: 0 ;
+}
+.table-view .table-column {
+	-fx-border-width: 0 ;
+}
+.table-row-cell:selected {
+    -fx-background-color: #293535;
+}
+.table-row-cell:hover{
+	-fx-background-color: #101b1b;
+}
+.table-view .column-header{
+    -fx-border-width: 0 0.25 0 0;
+    -fx-border-color: #5d8b8b;
+    -fx-background-color:black;
+}
+.table-view .column-header .label{
+	-fx-font: 14px "Verdana";
+	-fx-text-fill: #5d8b8b;
+	-fx-background-color:black;
+}
+.table-view .column-header .label:hover{
+	-fx-text-fill: white;
+}
 .result_cell{
-	-fx-background-color: deepskyblue;
+	-fx-background-color: black;
 	-fx-font: 12px "Verdana";
 	-fx-text-fill: white;
-	-fx-border-width: 0 0 1 0;
+	-fx-border-width: 0 0 0.25 0;
 	-fx-alignment: center-left; 
-	-fx-border-color: steelblue;
+	-fx-border-color: white;
 	-fx-text-alignment: left;
 }
 .result_cell:selected{
-	-fx-border-width: 2;
-	-fx-border-color: white;
+	-fx-background-color: #101b1b;
+}
+.no_playlist_dialog{
+	-fx-font: 12px "Verdana";
+	-fx-text-fill: #5d8b8b;
 }

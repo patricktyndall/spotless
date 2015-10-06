@@ -33,13 +33,16 @@ public class PlaylistPane extends VBox{
 	Button button;
 	double width;
 	double height;
+	static final double BUTTON_HEIGHT_PCT = 0.1;
 
 	public PlaylistPane(double x, double y) {
 		this.getStylesheets().add("GUIStyle.css");
 		this.getStyleClass().add("playlist_pane");
 		this.width = x;
 		this.height = y;
-
+		this.setPrefHeight(y);
+		this.setPrefWidth(x);
+		this.setSpacing(0);
 	}
 
 	public void display(){
@@ -53,8 +56,10 @@ public class PlaylistPane extends VBox{
 				new ChangeListener<String>() {
 					public void changed(ObservableValue<? extends String> ov, 
 							String old_val, String new_val) {
-						controller.setCurrentPlaylist(new_val);
-						playlistEditor.refresh();
+						if(new_val != ""){
+							controller.setCurrentPlaylist(new_val);
+							playlistEditor.refresh();
+						}
 					}
 				});
 	}
@@ -63,6 +68,7 @@ public class PlaylistPane extends VBox{
 
 		button = new Button("Add new");
 		button.setPrefWidth(width);
+		button.setPrefHeight(height*BUTTON_HEIGHT_PCT);
 		button.getStyleClass().add("add_new_button");
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
@@ -98,9 +104,11 @@ public class PlaylistPane extends VBox{
 		list = new ListView<String>();
 		list.getStyleClass().add("playlist_list");
 		List<String> items = controller.getPlaylistNames();
+		items.add(""); // TODO dummy item to allow list to be scrolled
 		list.setItems(FXCollections.observableArrayList(items));
-		list.setPrefWidth(width);
-		list.setPrefHeight(height);
+		list.setMaxWidth(width);
+		list.setMinWidth(width);
+		list.setPrefHeight(height*(1-(BUTTON_HEIGHT_PCT))); 
 		this.getChildren().add(list);
 	}
 

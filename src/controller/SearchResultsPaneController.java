@@ -11,5 +11,7 @@ public class SearchResultsPaneController extends AbstractPlaylistController{
 		return library.searchForTrackTitle(search);
 		
 	}
+	
+	
 
 }

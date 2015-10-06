@@ -23,5 +23,9 @@ public class TrackPaneController extends AbstractPlaylistController{
 
 	}
 	
+	public boolean isPlaylistSelected(){
+		return library.playlistSet();
+	}
+	
 
 }
