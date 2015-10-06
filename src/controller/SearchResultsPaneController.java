@@ -11,6 +11,11 @@ public class SearchResultsPaneController extends AbstractPlaylistController{
 		return library.searchForTrackTitle(search);
 		
 	}
+
+	public void trackSelected(Track selectedItem) {
+		library.addTrackToCurrentPlaylist(selectedItem);
+		
+	}
 	
 	
 

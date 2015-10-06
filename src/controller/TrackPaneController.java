@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.wrapper.spotify.models.Track;
 
-import data.Pair;
-
 public class TrackPaneController extends AbstractPlaylistController{
 	
 	

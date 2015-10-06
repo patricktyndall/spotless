@@ -88,10 +88,10 @@ public class Library {
 		} catch (Exception e) {
 			System.out.println("Something went wrong!" + e.getMessage());
 		}
-		
+
 		for(Track t : trackSearchResult.getItems()){
 			ret.add(t);
-			
+
 		}
 		return ret;
 
@@ -156,19 +156,34 @@ public class Library {
 		}
 	}
 
+	public void addTrackToCurrentPlaylist(final Track t){
+		// TODO is this safe?
+		new Thread(){
+			public void run(){
+			List<String> data = new ArrayList<String>();
+			data.add(t.getUri());
+			final AddTrackToPlaylistRequest request = api.addTracksToPlaylist(username, currentPlaylist.getId(), data)
+					.position(0) // TODO check this index
+					.build();
+
+			try {
+				request.get();
+			} catch (Exception e) {
+				System.out.println("Something went wrong!" + e.getMessage());
+			}}
+		}.start();
+
+	}
+
 	public List<String> getPlaylistNames(){
 		List<String> ret = new ArrayList<String>();
 		UserPlaylistsRequest.Builder builder = api.getPlaylistsForUser(username);
 		UserPlaylistsRequest request = builder.limit(40).offset(0).build();
-
-		// System.out.println("Request Data: " +
-
 		try {
 			Page<SimplePlaylist> playlistsPage = request.get();
 
 			for (SimplePlaylist playlist : playlistsPage.getItems()) {
 				ret.add(playlist.getName());
-				// System.out.println((playlist.getName()));
 			}
 
 			System.out.println("Playlist data :" +playlistsPage.getLimit()+ "  " + playlistsPage.getNext() + "   "+ 

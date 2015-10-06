@@ -3,7 +3,6 @@ package gui;
 import com.wrapper.spotify.models.Track;
 
 import controller.PlaylistPaneController;
-import controller.SearchBoxController;
 import controller.SearchResultsPaneController;
 import controller.TrackPaneController;
 import javafx.scene.Group;
@@ -18,7 +17,7 @@ import javafx.stage.Stage;
  * 2. A search bar top right with fillable fields to enable the searching and adding of songs
  * 3. A list below the search bar of songs that have already been added
  * 
- * TODO need some way for the playlistPane to notify the playlistEditor of the current playlist
+ * 
  */
 public class PlaylistEditor extends Region{
 	
@@ -47,7 +46,6 @@ public class PlaylistEditor extends Region{
 		trackPane = new TrackPane(x*(1-PLAYLISTPANE_X), y*(1-SEARCHBOX_Y));
 		searchResultsPane = new SearchResultsPane(250, 500); // TODO fix these sizes
 		
-		searchBox.setController(new SearchBoxController());
 		playlistPane.setController(new PlaylistPaneController());
 		trackPane.setController(new TrackPaneController());
 		searchResultsPane.setController(new SearchResultsPaneController());
@@ -86,13 +84,12 @@ public class PlaylistEditor extends Region{
 	}
 
 	public void trackSelected(Track selectedItem) {
-		System.out.println(selectedItem.getName());
+		trackPane.addTrackToTable(selectedItem);
 		// TODO add this to the playlist
 		// force the trackPane to refresh, and scroll down
-		
 	}
 
-	public void setStage(Stage stage) { // TODO best way to do this?
+	public void setStage(Stage stage) { // TODO is this the best way to do this?
 		this.stage = stage;
 		this.searchResultsPane.setParentStage(stage);
 		

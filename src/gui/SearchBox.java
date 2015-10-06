@@ -9,14 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import controller.AbstractPlaylistController;
-import controller.SearchBoxController;
-
 public class SearchBox extends HBox{
 
 	static final Double BUTTON_PCT = 0.15;
 
-	private SearchBoxController controller;
+
 
 	Double width;
 	Double height;
@@ -73,11 +70,6 @@ public class SearchBox extends HBox{
 				});
 
 		this.getChildren().add(textField);
-	}
-
-
-	public void setController(AbstractPlaylistController c){
-		this.controller = (SearchBoxController) c;
 	}
 
 	public void setListener(final PlaylistEditor playlistEditor) {

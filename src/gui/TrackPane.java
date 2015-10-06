@@ -33,16 +33,16 @@ public class TrackPane extends Region{
 	double height;
 	TableView<Track> table;
 	StackPane noPlaylistSelectedDialog;
-	
+
 
 	public TrackPane(double x, double y) {
-		
+
 		this.width = x;
 		this.height = y;
-		
+
 		makeTable();
 		makeNoPlaylistSelectedDialog();
-		
+
 		this.getChildren().add(noPlaylistSelectedDialog);
 	}
 
@@ -61,12 +61,12 @@ public class TrackPane extends Region{
 		table.getStylesheets().add("GUIStyle.css");
 		table.setItems(FXCollections.observableArrayList(new ArrayList<Track>()));
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		
+
 		makeTrackColumn();
 		makeArtistColumn();
 		makeAlbumColumn();
 	}
-	
+
 	public void update(){
 		if(controller.isPlaylistSelected()){
 			updateItems(controller.getTrackInfo());
@@ -79,11 +79,18 @@ public class TrackPane extends Region{
 			this.getChildren().clear();
 			this.getChildren().add(noPlaylistSelectedDialog);
 		}
-		
+
 	}
-	
+
 	public void updateItems(List<Track> newItems){
 		table.setItems(FXCollections.observableArrayList(newItems));
+	}
+
+	public void addTrackToTable(Track t){ 
+		// TODO -- do a check to make sure the data gets synchronized to the playlist as well
+		this.table.setVisible(false);
+		this.table.getItems().add(0,t);
+		this.table.setVisible(true);
 	}
 
 	private void makeTrackColumn(){
@@ -91,16 +98,16 @@ public class TrackPane extends Region{
 		trackNameCol.setMinWidth(100);
 
 		trackNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Track, Hyperlink>, ObservableValue<Hyperlink>>(){
-			 public ObservableValue<Hyperlink> call(TableColumn.CellDataFeatures<Track, Hyperlink> p) {
-				 if (p.getValue() != null) {
-					 //TODO add handler for opening the spotify URL
-			            return new ReadOnlyObjectWrapper<Hyperlink>(new Hyperlink(p.getValue().getName()));
-			        } else {
-			            return null;
-			        }
-		     }
+			public ObservableValue<Hyperlink> call(TableColumn.CellDataFeatures<Track, Hyperlink> p) {
+				if (p.getValue() != null) {
+					//TODO add handler for opening the spotify URL
+					return new ReadOnlyObjectWrapper<Hyperlink>(new Hyperlink(p.getValue().getName()));
+				} else {
+					return null;
+				}
+			}
 		});
-		
+
 		trackNameCol.setCellFactory(new Callback<TableColumn<Track, Hyperlink>, TableCell<Track, Hyperlink>>(){
 			public TableCell<Track, Hyperlink> call(
 					TableColumn<Track, Hyperlink> param) {
@@ -115,58 +122,58 @@ public class TrackPane extends Region{
 		trackNameCol.setMinWidth(width/9.0);
 		table.getColumns().add(trackNameCol);
 	}
-	
+
 	private void makeArtistColumn(){
-			TableColumn<Track, List<Hyperlink>> artistNameCol = new TableColumn<Track, List<Hyperlink>>("Artist");
-			artistNameCol.setMinWidth(100);
+		TableColumn<Track, List<Hyperlink>> artistNameCol = new TableColumn<Track, List<Hyperlink>>("Artist");
+		artistNameCol.setMinWidth(100);
 
-			artistNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Track, List<Hyperlink>>, ObservableValue<List<Hyperlink>>>(){
-				 public ObservableValue <List<Hyperlink>> call(TableColumn.CellDataFeatures<Track, List<Hyperlink>> p) {
-					 if (p.getValue() != null) {
-						 
-						 List<Hyperlink> artists = new ArrayList<Hyperlink>();
-						 for(SimpleArtist a : p.getValue().getArtists()){
-							 artists.add(new Hyperlink(a.getName()));
-							//TODO add handler for opening the spotify URLs
-						 }
-				            return new ReadOnlyObjectWrapper<List<Hyperlink>>(artists);
-						
-				        } else {
-				            return null;
-				        }
-			     }
-			});
-			
-			artistNameCol.setCellFactory(new Callback<TableColumn<Track, List<Hyperlink>>, TableCell<Track, List<Hyperlink>>>(){
-				public TableCell<Track, List<Hyperlink>> call(
-						TableColumn<Track, List<Hyperlink>> param) {
+		artistNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Track, List<Hyperlink>>, ObservableValue<List<Hyperlink>>>(){
+			public ObservableValue <List<Hyperlink>> call(TableColumn.CellDataFeatures<Track, List<Hyperlink>> p) {
+				if (p.getValue() != null) {
 
-					return new ArtistCell();
-				}	
-			}     
-					);
+					List<Hyperlink> artists = new ArrayList<Hyperlink>();
+					for(SimpleArtist a : p.getValue().getArtists()){
+						artists.add(new Hyperlink(a.getName()));
+						//TODO add handler for opening the spotify URLs
+					}
+					return new ReadOnlyObjectWrapper<List<Hyperlink>>(artists);
 
-			artistNameCol.setPrefWidth(width/3.0);
-			artistNameCol.setMaxWidth(width/2.0);
-			artistNameCol.setMinWidth(width/9.0);
-			table.getColumns().add(artistNameCol);
-		}
+				} else {
+					return null;
+				}
+			}
+		});
+
+		artistNameCol.setCellFactory(new Callback<TableColumn<Track, List<Hyperlink>>, TableCell<Track, List<Hyperlink>>>(){
+			public TableCell<Track, List<Hyperlink>> call(
+					TableColumn<Track, List<Hyperlink>> param) {
+
+				return new ArtistCell();
+			}	
+		}     
+				);
+
+		artistNameCol.setPrefWidth(width/3.0);
+		artistNameCol.setMaxWidth(width/2.0);
+		artistNameCol.setMinWidth(width/9.0);
+		table.getColumns().add(artistNameCol);
+	}
 
 	private void makeAlbumColumn(){
 		TableColumn<Track, Hyperlink> albumNameCol = new TableColumn<Track, Hyperlink>("Album");
 		albumNameCol.setMinWidth(100);
 
 		albumNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Track, Hyperlink>, ObservableValue<Hyperlink>>(){
-			 public ObservableValue<Hyperlink> call(TableColumn.CellDataFeatures<Track, Hyperlink> p) {
-				 if (p.getValue() != null) {
-					 //TODO add handler for opening the spotify URL
-			            return new ReadOnlyObjectWrapper<Hyperlink>(new Hyperlink(p.getValue().getAlbum().getName()));
-			        } else {
-			            return null;
-			        }
-		     }
+			public ObservableValue<Hyperlink> call(TableColumn.CellDataFeatures<Track, Hyperlink> p) {
+				if (p.getValue() != null) {
+					//TODO add handler for opening the spotify URL
+					return new ReadOnlyObjectWrapper<Hyperlink>(new Hyperlink(p.getValue().getAlbum().getName()));
+				} else {
+					return null;
+				}
+			}
 		});
-		
+
 		albumNameCol.setCellFactory(new Callback<TableColumn<Track, Hyperlink>, TableCell<Track, Hyperlink>>(){
 			public TableCell<Track, Hyperlink> call(
 					TableColumn<Track, Hyperlink> param) {
@@ -181,55 +188,56 @@ public class TrackPane extends Region{
 
 		table.getColumns().add(albumNameCol);
 	}
+
 	public void setController(AbstractPlaylistController c){
 		this.controller = (TrackPaneController) c;
 	}
 
 	private class TrackCell extends TableCell<Track, Hyperlink>{
-		
-		 public void updateItem(Hyperlink item, boolean empty) {
-	            super.updateItem(item, empty);
-	 
-	            if (empty) {
-	                setText(null);
-	                setGraphic(null);
-	            } else {
-	            	setGraphic(item);
-	            }
-	        }
+
+		public void updateItem(Hyperlink item, boolean empty) {
+			super.updateItem(item, empty);
+
+			if (empty) {
+				setText(null);
+				setGraphic(null);
+			} else {
+				setGraphic(item);
+			}
+		}
 	}
 
 	private class ArtistCell extends TableCell<Track, List<Hyperlink>>{
 		public void updateItem(List<Hyperlink> item, boolean empty) {
-            super.updateItem(item, empty);
- 
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-            	HBox links = new HBox();
-            	for(Hyperlink l : item){
-            		links.getChildren().add(l);
-            		links.getChildren().add(new Label(", "));
-            	}
-            	links.getChildren().remove(links.getChildren().size()-1);
-            	setGraphic(links);
-            }
-        }
+			super.updateItem(item, empty);
+
+			if (empty) {
+				setText(null);
+				setGraphic(null);
+			} else {
+				HBox links = new HBox();
+				for(Hyperlink l : item){
+					links.getChildren().add(l);
+					links.getChildren().add(new Label(", "));
+				}
+				links.getChildren().remove(links.getChildren().size()-1);
+				setGraphic(links);
+			}
+		}
 
 	}
 
 	private class AlbumCell extends TableCell<Track, Hyperlink>{
-		 public void updateItem(Hyperlink item, boolean empty) {
-	            super.updateItem(item, empty);
-	 
-	            if (empty) {
-	                setText(null);
-	                setGraphic(null);
-	            } else {
-	            	setGraphic(item);
-	            }
-	        }
+		public void updateItem(Hyperlink item, boolean empty) {
+			super.updateItem(item, empty);
+
+			if (empty) {
+				setText(null);
+				setGraphic(null);
+			} else {
+				setGraphic(item);
+			}
+		}
 	}
 
 

@@ -9,7 +9,6 @@ import authenticate.Authenticator;
 import com.wrapper.spotify.Api;
 
 import controller.Controller;
-import controller.Library;
 
 
 public class Main extends Application{

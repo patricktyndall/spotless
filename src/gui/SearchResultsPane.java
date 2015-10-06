@@ -5,8 +5,6 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
@@ -22,7 +20,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Callback;
 
 import com.wrapper.spotify.models.SimpleArtist;
@@ -48,7 +45,7 @@ public class SearchResultsPane extends ListView<Track>{
 		height = y;
 		setupFactory();
 	}
-	
+
 	private void setupFactory(){
 		this.setCellFactory(new Callback<ListView<Track>, 
 				ListCell<Track>>() { 
@@ -79,7 +76,7 @@ public class SearchResultsPane extends ListView<Track>{
 				this.getItems().set(index, newList.get(index));
 			}
 		}
-		
+
 		for(Thread t : runningThreads){
 			try {
 				t.join();
@@ -102,17 +99,17 @@ public class SearchResultsPane extends ListView<Track>{
 			this.getStylesheets().add("GUIStyle.css");
 			this.getStyleClass().clear();
 			this.getStyleClass().add("result_cell");
-			
+
 			configureAlbumArt();     
 			setTextInfo();
-			
+
 		}
 
 		private void configureAlbumArt() {
-			
+
 			this.setPrefHeight(90);
 			this.setPrefWidth(SearchResultsPane.this.width);
-			
+
 			albumArtPane.getChildren().add(albumArt);
 			albumArtPane.setPrefSize(70, 70);
 			albumArtPane.setMaxSize(70, 70);
@@ -120,19 +117,19 @@ public class SearchResultsPane extends ListView<Track>{
 			albumArt.setFitHeight(70);
 			albumArtPane.setTranslateX(10);	
 			albumArtPane.getStyleClass().add("album_art");
-		
-			
+
+
 			hbox.setSpacing(15);
 			hbox.setAlignment(Pos.CENTER_LEFT);
 			hbox.getChildren().add(albumArtPane);
 
-					
+
 		}
 
 		private void setTextInfo(){
 			name.getStyleClass().add("result_track_name");
 			album.getStyleClass().add("result_album_name");
-			
+
 			VBox textInfo = new VBox();
 			textInfo.setTranslateY(5);
 			textInfo.getChildren().add(name);
@@ -192,34 +189,35 @@ public class SearchResultsPane extends ListView<Track>{
 	public void setController(
 			SearchResultsPaneController controller) {
 		this.controller = controller;
-		
+
 	}
 
 
 	public void setListener(final PlaylistEditor playlistEditor) {
 		final EventHandler<KeyEvent> keyEventHandler =
-                new EventHandler<KeyEvent>() {
-                    public void handle(final KeyEvent keyEvent) {
-                        if (keyEvent.getCode()==KeyCode.ENTER) {
-                           playlistEditor.trackSelected(SearchResultsPane.this.getSelectionModel().getSelectedItem());
-                           SearchResultsPane.this.stage.hide();
-                        }
-                        if(keyEvent.getCode() == KeyCode.ESCAPE){
-                        	 SearchResultsPane.this.stage.hide();
-                        }
-                    }
-                };
+				new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.getCode()==KeyCode.ENTER) {
+					controller.trackSelected(SearchResultsPane.this.getSelectionModel().getSelectedItem());
+					playlistEditor.trackSelected(SearchResultsPane.this.getSelectionModel().getSelectedItem());
+					SearchResultsPane.this.stage.hide();
+				}
+				if(keyEvent.getCode() == KeyCode.ESCAPE){
+					SearchResultsPane.this.stage.hide();
+				}
+			}
+		};
 		this.setOnKeyPressed(keyEventHandler);
 	}
 
 	public void setParentStage(Stage stage2) {
-		
+
 		this.stage.setX(stage2.getX() + stage2.getWidth()); // TODO won't work when the stage's size is readjusted
 		this.stage.setY(stage2.getY());
-		
+
 		this.stage.initModality(Modality.WINDOW_MODAL);
 		this.stage.initOwner(stage2.getScene().getWindow());
-		
+
 	}
 
 }
