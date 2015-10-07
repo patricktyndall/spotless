@@ -79,7 +79,6 @@ public class TrackPane extends AbstractEditorPane{
 
 	public void update(){
 		if(controller.isPlaylistSelected()){
-			
 			updateItems(controller.getTrackInfo());
 		}
 		else{

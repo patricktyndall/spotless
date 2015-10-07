@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.wrapper.spotify.Api;
@@ -39,17 +40,26 @@ public class Library {
 			e.printStackTrace();
 		}
 
-		playlists = new HashMap<String, SimplePlaylist>();
+		playlists = new LinkedHashMap<String, SimplePlaylist>();
 		makePlaylistMap();
 	}
 
 	private void makePlaylistMap(){
-		final UserPlaylistsRequest request = api.getPlaylistsForUser(username).build();
+		final UserPlaylistsRequest request = api.getPlaylistsForUser(username).limit(50).build();
 		try {
-			final Page<SimplePlaylist> playlistsPage = request.get();
-			for (SimplePlaylist p : playlistsPage.getItems()) {
-				playlists.put(p.getName(), p);
-			}
+			// while(true){
+				Page<SimplePlaylist> playlistsPage = request.get();
+				for (SimplePlaylist p : playlistsPage.getItems()) {
+					playlists.put(p.getName(), p);
+				}
+				 /*String next;
+				if((next = playlistsPage.getNext()) == null)
+					break;
+				playlistsPage = api.getPlaylistsForUser(username).offset(20).build().get();
+				System.out.println(next);*/ 
+				// TODO figure out how to get next page of items from this URL
+			
+			// }
 		} catch (Exception e) {
 			System.out.println("Something went wrong!" + e.getMessage());
 		}
@@ -138,6 +148,10 @@ public class Library {
 	public void setCurrentPlaylist(String title){
 		currentPlaylist = playlists.get(title);
 	}
+	
+	public boolean playlistSet(){
+		return (!(currentPlaylist == null));
+	}
 
 	public void addTracksToPlaylist(SimplePlaylist playlist, List<String >data){
 
@@ -170,22 +184,9 @@ public class Library {
 		}.start();
 
 	}
-
+	
 	public List<String> getPlaylistNames(){
-		List<String> ret = new ArrayList<String>();
-		UserPlaylistsRequest.Builder builder = api.getPlaylistsForUser(username);
-		UserPlaylistsRequest request = builder.limit(40).offset(0).build();
-		try {
-			Page<SimplePlaylist> playlistsPage = request.get();
-			for (SimplePlaylist playlist : playlistsPage.getItems()) {
-				ret.add(playlist.getName());
-			}
-			System.out.println("Playlist data :" +playlistsPage.getLimit()+ "  " + playlistsPage.getNext() + "   "+ 
-					playlistsPage.getPrevious()+ "   " + playlistsPage.getTotal());
-		} catch (Exception e) {
-			System.out.println("Something went wrong!" + e.getMessage());
-		}
-		return ret;
+		return new ArrayList<String>(playlists.keySet());
 	}
 
 	public List<String> search(List<Pair> data){
@@ -218,7 +219,4 @@ public class Library {
 		return results;
 	}
 
-	public boolean playlistSet(){
-		return (!(currentPlaylist == null));
-	}
 }

@@ -66,9 +66,10 @@ public class PlaylistPane extends AbstractEditorPane{
 		dialog.setHeaderText("Please enter a name for your new playlist");
 		Optional<String> result = dialog.showAndWait();
 		controller.makePlaylist(result.get());
-		// TODO add catch if this isn't null
-		// TODO get a String from the Optional<String> and add it to the items
-		list.getItems().add(0, result);
+		
+		// TODO add catch if this is null
+		
+		list.getItems().add(0, result.get());
 		list.getSelectionModel().select(0);
 	}
 

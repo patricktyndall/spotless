@@ -65,10 +65,7 @@ public class Authenticator {
 		Futures.addCallback(authorizationCodeCredentialsFuture, new FutureCallback<AuthorizationCodeCredentials>() {
 			public void onSuccess(AuthorizationCodeCredentials authorizationCodeCredentials) {
 				/* The tokens were retrieved successfully! */
-				System.out.println("Successfully retrieved an access token! " + authorizationCodeCredentials.getAccessToken());
-				System.out.println("The access token expires in " + authorizationCodeCredentials.getExpiresIn() + " seconds");
-				System.out.println("Luckily, I can refresh it using this refresh token! " +     authorizationCodeCredentials.getRefreshToken());
-
+				
 				/* Set the access token and refresh token so that they are used whenever needed */
 				api.setAccessToken(authorizationCodeCredentials.getAccessToken());
 				api.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
