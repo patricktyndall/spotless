@@ -95,7 +95,6 @@ public class SearchResultsPane extends AbstractEditorPane{
 		}
 	}
 
-
 	public class ResultListCell extends ListCell<Track> {
 
 		private HBox hbox = new HBox();

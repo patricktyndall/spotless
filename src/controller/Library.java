@@ -131,11 +131,8 @@ public class Library {
 		}
 
 		updatePlaylistMap();
-
 		currentPlaylist = playlists.get(playlist.getName());
-
 		return playlists.get(playlist.getName());
-
 	}
 
 	public void setCurrentPlaylist(String title){

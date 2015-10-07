@@ -70,16 +70,12 @@ public class PlaylistPane extends AbstractEditorPane{
 		dialog.setTitle("Playlist name request");
 		dialog.setHeaderText("Please enter a name for your new playlist");
 		Optional<String> result = dialog.showAndWait();
-
-		
 		controller.makePlaylist(result.get());
-		
-		makeList();
-		// TODO
-		// launch a popup that takes a string
-		// create a playlist with that name
-		// add it to the ListView and select it
-		// ideally the listView handles it from here
+		updateList(); 
+	}
+	
+	private void updateList(){
+		list.setItems(FXCollections.observableArrayList(controller.getPlaylistNames()));
 	}
 
 	private void makeList(){
