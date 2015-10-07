@@ -1,6 +1,5 @@
 package gui;
 
-import controller.Controller;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -15,13 +14,9 @@ public class GUI extends Application {
 	/*
 	 * Instanciate all of the sub-components, and then instanciate the different 
 	 * screens with the sub-components as params
-	 * 
-	 * Create childViewControllers?
 	 */
-	
-	Controller controller;
 
-	/* Display vars--proportion of said dimension to occupy */
+	/* Display vars */
 	
 	static final double X_RATIO = 0.7;
 	static final double Y_RATIO = 0.4;
@@ -30,13 +25,6 @@ public class GUI extends Application {
 	double screenWidth;
 	Stage stage;
 
-	public GUI(Controller controller){
-
-		this.controller = controller;
-		
-
-	}
-	
 	private void setupBounds(){
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getVisualBounds();

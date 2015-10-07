@@ -1,11 +1,11 @@
 .search_section{
 	-fx-border-width: 0 0 2 0;
-	-fx-border-color: #5d8b8b;
+	-fx-border-color: #81a5a5;
 	-fx-background-color: #101b1b;
 }
 .album_art{
 	-fx-border-width: 3 3 3 3;
-	-fx-border-color: #5d8b8b;
+	-fx-border-color: #81a5a5;
 	-fx-border-radius: 2;
 }
 .hyperlink{
@@ -14,7 +14,8 @@
 }
 .playlist_pane{
 	-fx-border-width: 0 2 0 0;
-	-fx-border-color: #5d8b8b;
+	-fx-border-color: #81a5a5;
+	-fx-background-color: #101b1b;
 }
 .playlist_list{
 	-fx-border-width: 0;
@@ -24,7 +25,7 @@
 .list-cell{
 	-fx-font: 12px "Verdana";
 	-fx-background-color: #101b1b;
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-alignment: center-left; 
 	-fx-text-alignment: left;
 }
@@ -38,7 +39,7 @@
 .add_new_button{
 	-fx-font: 13px "Verdana";
 	-fx-font-weight: bold;
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-background-color: #101b1b;
 	-fx-border-width: 0;
 	-fx-text-alignment: left;
@@ -50,7 +51,7 @@
 .search_button{
 	-fx-font: 13px "Verdana";
 	-fx-font-weight: bold;
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-background-color: transparent;
 }
 .search_button:hover{
@@ -104,7 +105,7 @@
 .table-row-cell {
     -fx-background-color: black;
     -fx-border-width: 0 0 0.25 0;
-	-fx-border-color: #5d8b8b;
+	-fx-border-color: #81a5a5;
 }
 .table-column-cell{
 	-fx-border-width: 0 ;
@@ -120,12 +121,12 @@
 }
 .table-view .column-header{
     -fx-border-width: 0 0.25 0 0;
-    -fx-border-color: #5d8b8b;
+    -fx-border-color: #81a5a5;
     -fx-background-color:black;
 }
 .table-view .column-header .label{
 	-fx-font: 14px "Verdana";
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-background-color:black;
 }
 .table-view .column-header .label:hover{
@@ -145,17 +146,17 @@
 }
 .no_playlist_dialog{
 	-fx-font: 12px "Verdana";
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 }
 .result_track_name{
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-font: 12px "Verdana";
 }
 .result_artist_name{
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-font: 10px "Verdana";
 }
 .result_album_name{
-	-fx-text-fill: #5d8b8b;
+	-fx-text-fill: #81a5a5;
 	-fx-font: 10px "Verdana";
 }

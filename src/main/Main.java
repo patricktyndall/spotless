@@ -8,7 +8,7 @@ import authenticate.Authenticator;
 
 import com.wrapper.spotify.Api;
 
-import controller.Controller;
+import controller.AbstractPlaylistController;
 
 
 public class Main extends Application{
@@ -41,12 +41,11 @@ public class Main extends Application{
 		Authenticator auth = new Authenticator();
 		
 		auth.authenticate(api);
-		
-		Controller controller = new Controller(api); //TODO pass the gui as an agument to controller
-		
+		AbstractPlaylistController.setApi(api);
+				
 		// Controller controller = new Controller();
 		
-		GUI gui = new GUI(controller);
+		GUI gui = new GUI();
 		
 		gui.start(primaryStage);
 		

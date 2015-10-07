@@ -7,8 +7,6 @@ import com.wrapper.spotify.models.Track;
 
 public class TrackPaneController extends AbstractPlaylistController{
 	
-	
-	
 	public TrackPaneController(){
 		super();
 	}

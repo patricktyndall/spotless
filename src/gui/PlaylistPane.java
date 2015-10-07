@@ -15,18 +15,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 
-public class PlaylistPane extends VBox{
-
-	/*
-	 * Needs:
-	 * current playlist data
-	 * a button to create a`	 new playlist and communicate this
-	 * a means with which to communicate with the other structures about which playlist is being edited
-	 */
+public class PlaylistPane extends AbstractEditorPane{
 
 	private PlaylistPaneController controller;
 	
+	VBox vbox = new VBox();
 	ListView<String> list;
 	Button button;
 	double width;
@@ -34,33 +29,23 @@ public class PlaylistPane extends VBox{
 	static final double BUTTON_HEIGHT_PCT = 0.1;
 
 	public PlaylistPane(double x, double y) {
-		this.getStylesheets().add("GUIStyle.css");
-		this.getStyleClass().add("playlist_pane");
+		vbox.getStylesheets().add("GUIStyle.css");
+		vbox.getStyleClass().add("playlist_pane");
 		this.width = x;
 		this.height = y;
-		this.setPrefHeight(y);
-		this.setPrefWidth(x);
-		this.setSpacing(0);
-	}
-
-	public void display(){
-		makeAddNewButton();
-		makeList();
-		this.setAlignment(Pos.TOP_CENTER);
+		vbox.setPrefHeight(y);
+		vbox.setPrefWidth(x);
+		vbox.setSpacing(0);
+		this.getChildren().add(vbox);
+		
+		vbox.setAlignment(Pos.TOP_CENTER);
 	}
 	
-	public void setListener(final PlaylistEditor playlistEditor){ // TODO why must this be final
-		list.getSelectionModel().selectedItemProperty().addListener(
-				new ChangeListener<String>() {
-					public void changed(ObservableValue<? extends String> ov, 
-							String old_val, String new_val) {
-						if(new_val != ""){
-							controller.setCurrentPlaylist(new_val);
-							playlistEditor.refresh();
-						}
-					}
-				});
+	public void initializeData(){
+		makeAddNewButton();
+		makeList();
 	}
+
 
 	private void makeAddNewButton(){
 
@@ -74,19 +59,18 @@ public class PlaylistPane extends VBox{
 			}
 		});
 
-		this.getChildren().add(button);
+		vbox.getChildren().add(button);
 	}
 
 	private void newPlaylistWizard(){
 		
 		// TODO this isn't CSS-stylable, but it'll work for testing
 		TextInputDialog dialog = new TextInputDialog("New Playlist");
+		dialog.initStyle(StageStyle.UTILITY);
 		dialog.setTitle("Playlist name request");
 		dialog.setHeaderText("Please enter a name for your new playlist");
 		Optional<String> result = dialog.showAndWait();
-		/*if (result.isPresent()){
-			System.out.println("Your choice: " + result.get());
-		} */
+
 		
 		controller.makePlaylist(result.get());
 		
@@ -107,13 +91,23 @@ public class PlaylistPane extends VBox{
 		list.setMaxWidth(width);
 		list.setMinWidth(width);
 		list.setPrefHeight(height*(1-(BUTTON_HEIGHT_PCT))); 
-		this.getChildren().add(list);
+		vbox.getChildren().add(list);
 	}
 
 	public void setController(AbstractPlaylistController c){
 		this.controller = (PlaylistPaneController) c;
 	}
-
-
-
+	
+	public void setListener(final PlaylistEditor playlistEditor){ // TODO why must this be final
+		list.getSelectionModel().selectedItemProperty().addListener(
+				new ChangeListener<String>() {
+					public void changed(ObservableValue<? extends String> ov, 
+							String old_val, String new_val) {
+						if(new_val != ""){
+							controller.setCurrentPlaylist(new_val);
+							playlistEditor.refresh();
+						}
+					}
+				});
+	}
 }

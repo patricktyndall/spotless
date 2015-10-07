@@ -12,7 +12,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
@@ -22,7 +21,7 @@ import com.wrapper.spotify.models.Track;
 import controller.AbstractPlaylistController;
 import controller.TrackPaneController;
 
-public class TrackPane extends Region{
+public class TrackPane extends AbstractEditorPane{
 
 	static final Double ROW_HEIGHT_PCT = 0.05;
 
@@ -33,6 +32,7 @@ public class TrackPane extends Region{
 	double height;
 	TableView<Track> table;
 	StackPane noPlaylistSelectedDialog;
+	StackPane badPlaylistSelectedDialog;
 
 
 	public TrackPane(double x, double y) {
@@ -42,6 +42,7 @@ public class TrackPane extends Region{
 
 		makeTable();
 		makeNoPlaylistSelectedDialog();
+		makeBadPlaylistSelectedDialog();
 
 		this.getChildren().add(noPlaylistSelectedDialog);
 	}
@@ -51,6 +52,15 @@ public class TrackPane extends Region{
 		noPlaylistSelectedDialog.setPrefSize(width, height);
 		Label label = new Label("No playlist selected");
 		noPlaylistSelectedDialog.getChildren().add(label);
+		label.getStyleClass().add("no_playlist_dialog");
+	}
+
+	private void makeBadPlaylistSelectedDialog(){
+		badPlaylistSelectedDialog = new StackPane();
+		badPlaylistSelectedDialog.setPrefSize(width, height);
+		Label label = new Label("Unfortunately, playlists that include your local "
+				+ "files aren't supported. Working with Spotify to resolve the issue.");
+		badPlaylistSelectedDialog.getChildren().add(label);
 		label.getStyleClass().add("no_playlist_dialog");
 	}
 
@@ -69,21 +79,27 @@ public class TrackPane extends Region{
 
 	public void update(){
 		if(controller.isPlaylistSelected()){
+			
 			updateItems(controller.getTrackInfo());
-			if(!this.getChildren().contains(table)){
-				this.getChildren().clear();
-				this.getChildren().add(table);
-			}
 		}
 		else{
 			this.getChildren().clear();
 			this.getChildren().add(noPlaylistSelectedDialog);
 		}
-
 	}
 
 	public void updateItems(List<Track> newItems){
-		table.setItems(FXCollections.observableArrayList(newItems));
+		if(newItems!=null){
+			if(!this.getChildren().contains(table)){
+				this.getChildren().clear();
+				this.getChildren().add(table);
+			}
+			table.setItems(FXCollections.observableArrayList(newItems));
+		}
+		else{
+			this.getChildren().clear();
+			this.getChildren().add(badPlaylistSelectedDialog);
+		}
 	}
 
 	public void addTrackToTable(Track t){ 
@@ -189,10 +205,6 @@ public class TrackPane extends Region{
 		table.getColumns().add(albumNameCol);
 	}
 
-	public void setController(AbstractPlaylistController c){
-		this.controller = (TrackPaneController) c;
-	}
-
 	private class TrackCell extends TableCell<Track, Hyperlink>{
 
 		public void updateItem(Hyperlink item, boolean empty) {
@@ -240,7 +252,13 @@ public class TrackPane extends Region{
 		}
 	}
 
+	public void setController(AbstractPlaylistController c){
+		this.controller = (TrackPaneController) c;
+	}
 
+	public void setListener(PlaylistEditor e){
+		return;
+	}
 }
 
 

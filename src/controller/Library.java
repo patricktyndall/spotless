@@ -105,15 +105,14 @@ public class Library {
 
 		try {
 			final Page<PlaylistTrack> page = request.get();
-
 			final List<PlaylistTrack> playlistTracks = page.getItems();
-
 			for (PlaylistTrack playlistTrack : playlistTracks) {
 				ret.add((playlistTrack.getTrack()));
 			}
 
 		} catch (Exception e) {
-			System.out.println("Something went wrong!!!!" + e.getMessage());
+			System.out.println("Something went wrong!" + e.getMessage());
+			return null;
 		}
 
 		return ret;

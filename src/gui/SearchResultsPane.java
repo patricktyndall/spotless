@@ -3,9 +3,9 @@ package gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -25,12 +25,16 @@ import javafx.util.Callback;
 import com.wrapper.spotify.models.SimpleArtist;
 import com.wrapper.spotify.models.Track;
 
+import controller.AbstractPlaylistController;
 import controller.SearchResultsPaneController;
 
-public class SearchResultsPane extends ListView<Track>{
+public class SearchResultsPane extends AbstractEditorPane{
+
+	final String dummyName = "DUMMY";
 
 	Stage stage = new Stage();
-	List<Track> list;
+	ListView<Track> list;
+	Track dummyTrack;
 	double width;
 	double height;
 	SearchResultsPaneController controller = new SearchResultsPaneController();
@@ -39,15 +43,25 @@ public class SearchResultsPane extends ListView<Track>{
 
 	public SearchResultsPane(double x, double y){
 		runningThreads = new ArrayList<Thread>();
-		this.getStylesheets().add("GUIStyle.css");
-		list = new ArrayList<Track>();
+		list = new ListView<Track>();
+		list.setPrefHeight(y);
+
+		dummyTrack = new Track();
+		dummyTrack.setName(dummyName);
+		list.getStylesheets().add("GUIStyle.css");
 		width = x;
 		height = y;
 		setupFactory();
+
+		this.getChildren().add(list);
+		stage = new Stage();
+		stage.setTitle("Search Results");
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.setScene(new Scene(this, width, height));
 	}
 
 	private void setupFactory(){
-		this.setCellFactory(new Callback<ListView<Track>, 
+		list.setCellFactory(new Callback<ListView<Track>, 
 				ListCell<Track>>() { 
 			public ListCell<Track> call(ListView<Track> param) {
 				return new ResultListCell();
@@ -56,33 +70,29 @@ public class SearchResultsPane extends ListView<Track>{
 		});
 	}
 
-	public void display(){
-
-		stage = new Stage();
-		stage.setTitle("Search Results");
-		stage.initModality(Modality.WINDOW_MODAL);
-		stage.setScene(new Scene(this, width, height));
-		this.setItems(FXCollections.observableArrayList(list));
-
-	}
 
 	public void updateContents(final List<Track> newList){
-		if(this.getItems().size()==0)
-			this.setItems(FXCollections.observableArrayList(newList));
-		else{	// TODO make this iterate over the newList instead of items
-			this.runningThreads.clear();
-			for(Track track : this.getItems()){
-				int index = this.getItems().indexOf(track);
-				this.getItems().set(index, newList.get(index));
+		this.runningThreads.clear();
+		for(Track track : newList){
+			int index = newList.indexOf(track);
+			if(index < list.getItems().size())
+				list.getItems().set(index, newList.get(index));
+			else{
+				list.getItems().add(new Track());
+				list.getItems().set(index, newList.get(index));
 			}
 		}
-
+		if(list.getItems().size() > newList.size()){
+			list.getItems().subList(newList.size(), list.getItems().size()).clear();
+		}
+		list.getItems().add(dummyTrack);
 		for(Thread t : runningThreads){
 			try {
 				t.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}}
+			}
+		}
 	}
 
 
@@ -94,21 +104,18 @@ public class SearchResultsPane extends ListView<Track>{
 		private Hyperlink album = new Hyperlink();
 		private ImageView albumArt = new ImageView();
 		private StackPane albumArtPane = new StackPane();
+		private StackPane addMorePane = new StackPane();
 
 		public ResultListCell() {
 			this.getStylesheets().add("GUIStyle.css");
-			this.getStyleClass().clear();
 			this.getStyleClass().add("result_cell");
 
 			configureAlbumArt();     
 			setTextInfo();
-
 		}
 
 		private void configureAlbumArt() {
-
 			this.setPrefHeight(90);
-			this.setPrefWidth(SearchResultsPane.this.width);
 
 			albumArtPane.getChildren().add(albumArt);
 			albumArtPane.setPrefSize(70, 70);
@@ -118,12 +125,9 @@ public class SearchResultsPane extends ListView<Track>{
 			albumArtPane.setTranslateX(10);	
 			albumArtPane.getStyleClass().add("album_art");
 
-
 			hbox.setSpacing(15);
 			hbox.setAlignment(Pos.CENTER_LEFT);
 			hbox.getChildren().add(albumArtPane);
-
-
 		}
 
 		private void setTextInfo(){
@@ -144,9 +148,28 @@ public class SearchResultsPane extends ListView<Track>{
 			super.updateItem(track, empty);
 			if (empty) {
 				clearContent();
-			} else {
+			} else if(track.getName() != SearchResultsPane.this.dummyName){
 				addContent(track);
 			}
+			else{
+				addMoreResultsButton();
+			}
+		}
+
+		private void addMoreResultsButton(){
+			Thread t = new Thread(){
+				public void run(){
+					ResultListCell.this.setPrefHeight(45);
+					ResultListCell.this.hbox.getChildren().clear();
+					Label label = new Label("Load 5 More");
+					addMorePane.getChildren().add(label);
+					addMorePane.setPrefSize(SearchResultsPane.this.width, 45);
+					ResultListCell.this.hbox.getChildren().add(addMorePane);
+				}
+			};
+			t.start();
+			SearchResultsPane.this.runningThreads.add(t);
+			setGraphic(hbox);
 		}
 
 		private void clearContent() {
@@ -157,16 +180,22 @@ public class SearchResultsPane extends ListView<Track>{
 		private void addContent(final Track track) {
 			Thread t = new Thread(){
 				public void run(){
+
 					artistBox.getChildren().clear();
 					name.setText(track.getName());
 					album.setText(track.getAlbum().getName());
+
 					for(SimpleArtist s : track.getArtists()){
 						Hyperlink h = new Hyperlink(s.getName());
-						h.getStyleClass().add("result_artist_name");
 						artistBox.getChildren().add(h);
-						artistBox.getChildren().add(new Label("/"));
+						Label slash = new Label("/");
+						slash.setTranslateY(2);
+						artistBox.getChildren().add(slash);
 					}
 					artistBox.getChildren().remove(artistBox.getChildren().size()-1);
+					for (Node n : artistBox.getChildren())
+						n.getStyleClass().add("result_artist_name");
+
 					List<com.wrapper.spotify.models.Image> URLS = track.getAlbum().getImages();
 					String imageSource = URLS.get(URLS.size()-1).getUrl();
 					albumArt.setImage(new Image(imageSource));
@@ -174,6 +203,7 @@ public class SearchResultsPane extends ListView<Track>{
 			};
 			SearchResultsPane.this.runningThreads.add(t);
 			t.start();
+
 			setGraphic(hbox);
 		}
 	}
@@ -182,24 +212,27 @@ public class SearchResultsPane extends ListView<Track>{
 		stage.hide();
 		updateContents(controller.getSearchResults(text));
 		stage.show();
-		this.requestFocus();
+		this.list.requestFocus();
 	}
 
-
-	public void setController(
-			SearchResultsPaneController controller) {
-		this.controller = controller;
-
+	public void setParentStage(Stage stage2) {
+		this.stage.setX(stage2.getX() + stage2.getWidth() + 100); // magic number 
+		this.stage.setY(stage2.getY());
+		this.stage.initModality(Modality.WINDOW_MODAL);
+		this.stage.initOwner(stage2.getScene().getWindow());
 	}
 
+	public void setController(AbstractPlaylistController controller) {
+		this.controller = (SearchResultsPaneController) controller;
+	}
 
 	public void setListener(final PlaylistEditor playlistEditor) {
 		final EventHandler<KeyEvent> keyEventHandler =
 				new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
 				if (keyEvent.getCode()==KeyCode.ENTER) {
-					controller.trackSelected(SearchResultsPane.this.getSelectionModel().getSelectedItem());
-					playlistEditor.trackSelected(SearchResultsPane.this.getSelectionModel().getSelectedItem());
+					controller.trackSelected(SearchResultsPane.this.list.getSelectionModel().getSelectedItem());
+					playlistEditor.trackSelected(SearchResultsPane.this.list.getSelectionModel().getSelectedItem());
 					SearchResultsPane.this.stage.hide();
 				}
 				if(keyEvent.getCode() == KeyCode.ESCAPE){
@@ -207,17 +240,6 @@ public class SearchResultsPane extends ListView<Track>{
 				}
 			}
 		};
-		this.setOnKeyPressed(keyEventHandler);
+		this.list.setOnKeyPressed(keyEventHandler);
 	}
-
-	public void setParentStage(Stage stage2) {
-
-		this.stage.setX(stage2.getX() + stage2.getWidth()); // TODO won't work when the stage's size is readjusted
-		this.stage.setY(stage2.getY());
-
-		this.stage.initModality(Modality.WINDOW_MODAL);
-		this.stage.initOwner(stage2.getScene().getWindow());
-
-	}
-
 }
