@@ -58,7 +58,7 @@ public class SearchBox extends AbstractEditorPane{
 				}
 			}
 				});
-		
+
 		textField.focusedProperty().addListener(new ChangeListener<Boolean>()
 				{
 			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
@@ -69,10 +69,9 @@ public class SearchBox extends AbstractEditorPane{
 				}
 			}
 				});
-
 		hbox.getChildren().add(textField);
 	}
-	
+
 	public void setController(AbstractPlaylistController c){
 		this.controller = (SearchBoxController) c;
 	}
@@ -88,7 +87,7 @@ public class SearchBox extends AbstractEditorPane{
 					alert.setTitle("Playlist name request");
 					alert.showAndWait();
 				}
-					
+
 			}
 		});
 	}

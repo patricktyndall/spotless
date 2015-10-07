@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
 
 public class PlaylistPane extends AbstractEditorPane{
 
@@ -46,7 +45,6 @@ public class PlaylistPane extends AbstractEditorPane{
 		makeList();
 	}
 
-
 	private void makeAddNewButton(){
 
 		button = new Button("Add new");
@@ -58,24 +56,20 @@ public class PlaylistPane extends AbstractEditorPane{
 				newPlaylistWizard();
 			}
 		});
-
 		vbox.getChildren().add(button);
 	}
 
 	private void newPlaylistWizard(){
-		
 		// TODO this isn't CSS-stylable, but it'll work for testing
 		TextInputDialog dialog = new TextInputDialog("New Playlist");
-		dialog.initStyle(StageStyle.UTILITY);
 		dialog.setTitle("Playlist name request");
 		dialog.setHeaderText("Please enter a name for your new playlist");
 		Optional<String> result = dialog.showAndWait();
 		controller.makePlaylist(result.get());
-		updateList(); 
-	}
-	
-	private void updateList(){
-		list.setItems(FXCollections.observableArrayList(controller.getPlaylistNames()));
+		// TODO add catch if this isn't null
+		// TODO get a String from the Optional<String> and add it to the items
+		list.getItems().add(0, result);
+		list.getSelectionModel().select(0);
 	}
 
 	private void makeList(){
@@ -93,8 +87,8 @@ public class PlaylistPane extends AbstractEditorPane{
 	public void setController(AbstractPlaylistController c){
 		this.controller = (PlaylistPaneController) c;
 	}
-	
-	public void setListener(final PlaylistEditor playlistEditor){ // TODO why must this be final
+
+	public void setListener(final PlaylistEditor playlistEditor){ 
 		list.getSelectionModel().selectedItemProperty().addListener(
 				new ChangeListener<String>() {
 					public void changed(ObservableValue<? extends String> ov, 

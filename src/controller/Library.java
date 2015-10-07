@@ -177,20 +177,15 @@ public class Library {
 		UserPlaylistsRequest request = builder.limit(40).offset(0).build();
 		try {
 			Page<SimplePlaylist> playlistsPage = request.get();
-
 			for (SimplePlaylist playlist : playlistsPage.getItems()) {
 				ret.add(playlist.getName());
 			}
-
 			System.out.println("Playlist data :" +playlistsPage.getLimit()+ "  " + playlistsPage.getNext() + "   "+ 
 					playlistsPage.getPrevious()+ "   " + playlistsPage.getTotal());
-
 		} catch (Exception e) {
 			System.out.println("Something went wrong!" + e.getMessage());
 		}
-
 		return ret;
-
 	}
 
 	public List<String> search(List<Pair> data){
